@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<body>
+<table>
+    <tr>
+        <th>Start</th>
+        <th>Sport</th>
+        <th>Team</th>
+        <th>Team</th>
+    </tr>
+    #foreach( $e in $events )
+    <tr>
+        <td>$e.getStart()</td>
+        <td>$e.getSport()</td>
+        <td>$e.getTeam1()</td>
+        <td>$e.getTeam2()</td>
+    </tr>
+    #end
+</table>
+</body>
+</html>

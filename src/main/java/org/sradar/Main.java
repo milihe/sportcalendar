@@ -1,5 +1,7 @@
 package org.sradar;
 
+import spark.template.velocity.VelocityTemplateEngine;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,15 +16,9 @@ public class Main {
     public static void main(String[] args) {
         get("/", (req, res) -> {
             try(var conn = getDbConnection()) {
-                var dbAccess = new DbAccess(conn);
-                var events = dbAccess.getEvents();
-                var response = "";
-                for(var e: events) {
-                    response = response + "<br/>" + "id:" + e.getEventId() + ", start:" + e.getStart() + ", sport:" + e.getSport() + ", t1:" + e.getTeam1() + ", t2:" + e.getTeam2();
-                }
-                return response;
+                return Controller.getEvents(req, res, new DbAccess(conn));
             }
-        });
+        }, new VelocityTemplateEngine());
     }
 
     private static Connection getDbConnection() throws SQLException {

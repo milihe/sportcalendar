@@ -37,4 +37,21 @@ public class DbAccess {
         }
         return events;
     }
+
+    public List<Sport> getSports() throws SQLException {
+        String sql = "SELECT * FROM sports";
+        List<Sport> sports = new ArrayList<>();
+        try (var statement = conn.createStatement()) {
+            try (var result = statement.executeQuery(sql)) {
+                while (result.next()) {
+                    var sport = new Sport(
+                        result.getInt("sportId"),
+                        result.getString("sport")
+                    );
+                    sports.add(sport);
+                }
+            }
+        }
+        return sports;
+    }
 }

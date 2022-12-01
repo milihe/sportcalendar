@@ -14,4 +14,13 @@ public class Controller {
         model.put("events", events);
         return new ModelAndView(model, "templates/get-events.html");
     }
+
+    public static ModelAndView addEvent(Request req, Response res, DbAccess dbAccess) throws SQLException {
+        var selectedSportId = req.queryParams("sportId");
+        var sports = dbAccess.getSports();
+        var model = new HashMap<>();
+        model.put("sports", sports);
+        model.put("selectedSportId", selectedSportId);
+        return new ModelAndView(model, "templates/add-event.html");
+    }
 }

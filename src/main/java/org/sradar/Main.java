@@ -19,6 +19,12 @@ public class Main {
                 return Controller.getEvents(req, res, new DbAccess(conn));
             }
         }, new VelocityTemplateEngine());
+
+        get("/add-event", (req, res) -> {
+            try(var conn = getDbConnection()) {
+                return Controller.addEvent(req, res, new DbAccess(conn));
+            }
+        }, new VelocityTemplateEngine());
     }
 
     private static Connection getDbConnection() throws SQLException {

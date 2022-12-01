@@ -1,0 +1,15 @@
+#parse("/templates/layout.html")
+#@mainLayout()
+
+    Sport<br/>
+    <form id="select-sport" action="/add-event" method="get">
+        <select name="sportId" onchange="this.form.submit()">
+            #foreach( $e in $sports )
+                <option value="$e.getSportId()" #if($selectedSportId==$e.getSportId()) selected #end >
+                    $e.sport
+                </option>
+            #end
+        </select>
+    </form>
+
+#end

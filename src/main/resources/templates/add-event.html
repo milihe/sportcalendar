@@ -5,21 +5,27 @@
         <p>$error</p>
     #end
 
-    Sport<br/>
     <form id="select-sport" action="/add-event" method="get">
-        <select name="sportId" onchange="this.form.submit()">
-            #foreach( $e in $sports )
-                <option value="$e.getSportId()" #if($selectedSportId==$e.getSportId()) selected #end >
-                    $e.sport
-                </option>
-            #end
-        </select>
+        <table>
+            <tr>
+                <td width="70">Sport</td>
+                <td>
+                    <select name="sportId" onchange="this.form.submit()">
+                        #foreach( $e in $sports )
+                            <option value="$e.getSportId()" #if($selectedSportId==$e.getSportId()) selected #end >
+                                $e.sport
+                            </option>
+                        #end
+                    </select>
+                </td>
+            </tr>
+        </table>
     </form>
 
     <form id="add-event" action="/add-event?sportId=$selectedSportId" method="post">
         <table>
             <tr>
-                <td>Start</td>
+                <td width="70">Start</td>
                 <td>
                     <input type="datetime-local" name="start" />
                 </td>
@@ -49,7 +55,8 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2">
+                <td />
+                <td>
                     <input name="submit" type="submit" value="Add event" />
                 </td>
             </tr>

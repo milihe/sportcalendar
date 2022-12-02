@@ -12,37 +12,44 @@
         </select>
     </form>
 
-    <table>
-        <tr>
-            <td>Start</td>
-            <td>
-                <input type="datetime-local" name="start">
-            </td>
-        </tr>
-        <tr>
-            <td>Team1</td>
-            <td>
-                <select name="team1">
-                    #foreach( $e in $teams )
-                    <option value="$e.getTeamId()">
-                        $e.getTeam()
-                    </option>
-                    #end
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>Team2</td>
-            <td>
-                <select name="team2">
-                    #foreach( $e in $teams )
-                    <option value="$e.getTeamId()">
-                        $e.getTeam()
-                    </option>
-                    #end
-                </select>
-            </td>
-        </tr>
-    </table>
+    <form id="add-event" action="/add-event?sportId=$selectedSportId" method="post">
+        <table>
+            <tr>
+                <td>Start</td>
+                <td>
+                    <input type="datetime-local" name="start" />
+                </td>
+            </tr>
+            <tr>
+                <td>Team1</td>
+                <td>
+                    <select name="teamId1">
+                        #foreach( $e in $teams )
+                        <option value="$e.getTeamId()">
+                            $e.getTeam()
+                        </option>
+                        #end
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Team2</td>
+                <td>
+                    <select name="teamId2">
+                        #foreach( $e in $teams )
+                        <option value="$e.getTeamId()">
+                            $e.getTeam()
+                        </option>
+                        #end
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input name="submit" type="submit" value="Add event" />
+                </td>
+            </tr>
+        </table>
+    </form>
 
 #end

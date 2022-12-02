@@ -2,6 +2,8 @@ package org.sradar;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,5 +74,16 @@ public class DbAccess {
             }
         }
         return teams;
+    }
+
+    public void addEvent(Instant start, int sportId, int teamId1, int teamId2) throws SQLException {
+        String sql = "INSERT INTO events (start, sportId, teamId1, teamId2) VALUES (?,?,?,?)";
+        try (var statement = conn.prepareStatement(sql)) {
+            statement.setTimestamp(1, Timestamp.from(start));
+            statement.setInt(2, sportId);
+            statement.setInt(3, teamId1);
+            statement.setInt(4, teamId2);
+            statement.executeUpdate();
+        }
     }
 }

@@ -5,6 +5,8 @@ import spark.Request;
 import spark.Response;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 
 public class Controller {
@@ -26,6 +28,17 @@ public class Controller {
         }
 
         var teams = dbAccess.getTeams(sportId);
+
+        if (req.queryParams("submit") != null) {
+            var localStart = LocalDateTime.parse(req.queryParams("start"));
+            var instant = localStart.atZone(ZoneId.of("Europe/Vienna")).toInstant();
+            var teamId1 = Integer.parseInt(req.queryParams("teamId1"));
+            var teamId2 = Integer.parseInt(req.queryParams("teamId2"));
+            dbAccess.addEvent(instant, sportId, teamId1, teamId2);
+            res.redirect("/");
+            return null;
+        }
+
         var model = new HashMap<>();
         model.put("sports", sports);
         model.put("selectedSportId", sportId);

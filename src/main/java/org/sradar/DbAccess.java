@@ -54,4 +54,23 @@ public class DbAccess {
         }
         return sports;
     }
+
+    public List<Team> getTeams(int sportId) throws SQLException {
+        String sql = "SELECT * FROM teams WHERE sportId = ? ORDER BY team";
+        List<Team> teams = new ArrayList<>();
+        try (var statement = conn.prepareStatement(sql)) {
+            statement.setInt(1, sportId);
+            try (var result = statement.executeQuery()) {
+                while (result.next()) {
+                    var team = new Team(
+                        result.getInt("teamId"),
+                        result.getInt("sportId"),
+                        result.getString("team")
+                    );
+                    teams.add(team);
+                }
+            }
+        }
+        return teams;
+    }
 }

@@ -1,6 +1,10 @@
 #parse("/templates/layout.html")
 #@mainLayout()
 
+    #if ( $error )
+        <p>$error</p>
+    #end
+
     Sport<br/>
     <form id="select-sport" action="/add-event" method="get">
         <select name="sportId" onchange="this.form.submit()">

@@ -29,20 +29,32 @@ public class Controller {
 
         var teams = dbAccess.getTeams(sportId);
 
+        String error = null;
         if (req.queryParams("submit") != null) {
-            var localStart = LocalDateTime.parse(req.queryParams("start"));
-            var instant = localStart.atZone(ZoneId.of("Europe/Vienna")).toInstant();
-            var teamId1 = Integer.parseInt(req.queryParams("teamId1"));
-            var teamId2 = Integer.parseInt(req.queryParams("teamId2"));
-            dbAccess.addEvent(instant, sportId, teamId1, teamId2);
-            res.redirect("/");
-            return null;
+            try {
+                if (req.queryParams("start").isEmpty()) {
+                    throw new IllegalArgumentException("Start is not selected");
+                }
+                var localStart = LocalDateTime.parse(req.queryParams("start"));
+                var start = localStart.atZone(ZoneId.of("Europe/Vienna")).toInstant();
+                int teamId1 = Integer.parseInt(req.queryParams("teamId1"));
+                int teamId2 = Integer.parseInt(req.queryParams("teamId2"));
+                if (teamId1 == teamId2) {
+                    throw new IllegalArgumentException("Same team cannot be selected twice");
+                }
+                dbAccess.addEvent(start, sportId, teamId1, teamId2);
+                res.redirect("/");
+                return null;
+            } catch (Exception ex) {
+                error = ex.getMessage();
+            }
         }
 
         var model = new HashMap<>();
         model.put("sports", sports);
         model.put("selectedSportId", sportId);
         model.put("teams", teams);
+        model.put("error", error);
         return new ModelAndView(model, "templates/add-event.html");
     }
 }

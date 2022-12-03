@@ -21,6 +21,7 @@ public class DbAccess {
             JOIN sports s ON s.sportId = e.sportId
             JOIN teams t1 ON t1.teamId = e.teamId1
             JOIN teams t2 ON t2.teamId = e.teamId2
+            ORDER BY start
             """;
         List<Event> events = new ArrayList<>();
         try (var statement = conn.createStatement()) {
@@ -48,6 +49,7 @@ public class DbAccess {
                         JOIN teams t1 ON t1.teamId = e.teamId1
                         JOIN teams t2 ON t2.teamId = e.teamId2
                         WHERE e.sportId = ? 
+                        ORDER BY start
                         """;
         List<Event> events = new ArrayList<>();
         try (var statement = conn.prepareStatement(sql)) {

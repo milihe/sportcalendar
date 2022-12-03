@@ -8,14 +8,32 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
+import java.util.List;
 
 public class Controller {
     public static ModelAndView getEvents(Request req, Response res, DbAccess dbAccess) throws SQLException {
-        var events = dbAccess.getEvents();
+        int sportId = 0; // all sports
+        if (req.queryParams("sportId") != null) {
+            sportId = Integer.parseInt(req.queryParams("sportId"));
+        }
+
+        List<Event> events;
+        if (sportId > 0) {
+            events = dbAccess.getEventsBySport(sportId);
+        } else {
+            events = dbAccess.getEvents();
+        }
+
+        var sports = dbAccess.getSports();
+        sports.add(0, new Sport(0, "All sports"));
+
         var model = new HashMap<>();
         model.put("events", events);
+        model.put("sports", sports);
+        model.put("selectedSportId", sportId);
         return new ModelAndView(model, "templates/get-events.html");
     }
+
 
     public static ModelAndView addEvent(Request req, Response res, DbAccess dbAccess) throws SQLException {
         var sports = dbAccess.getSports();

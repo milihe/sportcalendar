@@ -40,6 +40,34 @@ public class DbAccess {
         return events;
     }
 
+    public List<Event> getEventsBySport(int sportId) throws SQLException {
+        String sql = """
+                        SELECT eventId, start, e.sportId, s.sport, t1.team team1, t2.team team2
+                        FROM events e 
+                        JOIN sports s ON s.sportId = e.sportId
+                        JOIN teams t1 ON t1.teamId = e.teamId1
+                        JOIN teams t2 ON t2.teamId = e.teamId2
+                        WHERE e.sportId = ? 
+                        """;
+        List<Event> events = new ArrayList<>();
+        try (var statement = conn.prepareStatement(sql)) {
+            statement.setInt(1, sportId);
+            try (var result = statement.executeQuery()) {
+                while (result.next()) {
+                    var event = new Event(
+                            result.getInt("eventId"),
+                            result.getTimestamp("start").toInstant(),
+                            result.getString("sport"),
+                            result.getString("team1"),
+                            result.getString("team2")
+                    );
+                    events.add(event);
+                }
+            }
+        }
+        return events;
+    }
+
     public List<Sport> getSports() throws SQLException {
         String sql = "SELECT * FROM sports";
         List<Sport> sports = new ArrayList<>();

@@ -1,5 +1,22 @@
 #parse("/templates/layout.html")
 #@mainLayout()
+    <form id="select-sport" action="/" method="get">
+        <table>
+            <tr>
+                <td width="70">Sport</td>
+                <td>
+                    <select name="sportId" onchange="this.form.submit()">
+                        #foreach( $e in $sports )
+                        <option value="$e.getSportId()" #if($selectedSportId==$e.getSportId()) selected #end >
+                            $e.sport
+                        </option>
+                        #end
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </form>
+
     <table class="myTable">
         <tr>
             <th>Start</th>

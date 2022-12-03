@@ -1,0 +1,73 @@
+CREATE SCHEMA `sradar` ;
+
+USE `sradar`;
+
+CREATE TABLE `sports` (
+  `sportId` int NOT NULL AUTO_INCREMENT,
+  `sport` varchar(45) NOT NULL,
+  PRIMARY KEY (`sportId`),
+  UNIQUE KEY `uq_sport` (`sport`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE `teams` (
+  `teamId` int NOT NULL AUTO_INCREMENT,
+  `sportId` int NOT NULL,
+  `team` varchar(100) NOT NULL,
+  PRIMARY KEY (`teamId`),
+  UNIQUE KEY `uq_sport_team` (`sportId`,`team`),
+  CONSTRAINT `_fk_teams_sports_sportId` FOREIGN KEY (`sportId`) REFERENCES `sports` (`sportId`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `events` (
+  `eventId` int NOT NULL AUTO_INCREMENT,
+  `start` datetime NOT NULL,
+  `sportId` int NOT NULL,
+  `teamId1` int NOT NULL,
+  `teamId2` int NOT NULL,
+  PRIMARY KEY (`eventId`),
+  KEY `idx_sportId` (`sportId`),
+  KEY `idx_teamId1` (`teamId1`),
+  KEY `idx_teamId2` (`teamId2`),
+  CONSTRAINT `_fk_events_sports_sportId` FOREIGN KEY (`sportId`) REFERENCES `sports` (`sportId`),
+  CONSTRAINT `_fk_events_teams_teamId1` FOREIGN KEY (`teamId1`) REFERENCES `teams` (`teamId`),
+  CONSTRAINT `_fk_events_teams_teamId2` FOREIGN KEY (`teamId2`) REFERENCES `teams` (`teamId`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO `sports` (`sportId`,`sport`) VALUES
+(1,'soccer'),
+(4,'hockey');
+
+INSERT INTO `teams` (`teamId`,`sportId`,`team`) VALUES
+(1,1,'Salzburg'),
+(2,1,'Sturm Graz'),
+(3,1,'LASK'),
+(4,1,'Rapid Wien'),
+(5,1,'Tirol'),
+(6,1,'A. Klagenfurt'),
+(7,1,'Austria Wien'),
+(8,1,'Austria Lustenau'),
+(9,1,'Wolfsberger AC'),
+(10,1,'Altach'),
+(11,1,'Ried'),
+(12,1,'Hartberg'),
+(13,4,'Innsbruck'),
+(14,4,'Bolzano'),
+(15,4,'Villach'),
+(16,4,'Salzburg'),
+(17,4,'Black Wings Linz'),
+(18,4,'Fehérvár AV19'),
+(19,4,'Vienna'),
+(20,4,'Klagenfurt'),
+(21,4,'Graz'),
+(22,4,'Val Pusteria'),
+(23,4,'HK Olimpija'),
+(24,4,'Asiago'),
+(25,4,'Vorarlberg');
+
+INSERT INTO `events` (`eventId`,`start`,`sportId`,`teamId1`,`teamId2`) VALUES
+(1,'2022-12-02 18:15:00',4,17,21),
+(2,'2022-12-02 18:15:00',4,18,25),
+(3,'2022-12-02 19:15:00',4,23,22),
+(4,'2022-12-02 19:15:00',4,13,16),
+(5,'2022-12-03 20:45:00',1,1,5);
